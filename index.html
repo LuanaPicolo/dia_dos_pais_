@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dia dos Pais</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #ffebee;
+        color: #333;
+        overflow-x: hidden;
+        text-align: center;
+    }
+    h1 {
+        margin-top: 40px;
+        font-size: 3em;
+        color: #d32f2f;
+        position: relative;
+        z-index: 2;
+    }
+    .slideshow {
+        position: relative;
+        max-width: 400px;
+        margin: 20px auto;
+        z-index: 2;
+    }
+    .slideshow img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+        transition: opacity 0.5s ease;
+    }
+    .mensagem {
+        margin: 20px auto;
+        max-width: 500px;
+        background: rgba(255,255,255,0.85);
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 18px;
+        z-index: 2;
+        position: relative;
+        min-height: 60px;
+    }
+    .heart {
+        position: fixed;
+        top: -20px;
+        color: red;
+        animation: fall linear infinite;
+        font-size: 20px;
+        z-index: 1;
+    }
+    @keyframes fall {
+        to {
+            transform: translateY(100vh);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+<body>
+
+<h1>Feliz Dia dos Pais!</h1>
+
+<div class="slideshow">
+    <img id="foto" src="img/foto1.jpg" alt="Foto de Dia dos Pais">
+</div>
+
+<div class="mensagem" id="mensagem"></div>
+
+<audio id="musica" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_42b9f4b6d8.mp3?filename=inspiring-romantic-piano-11271.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+</audio>
+
+<script>
+    // Lista de fotos
+    const fotos = [
+        "img/foto1.jpg", "img/foto2.jpg", "img/foto3.jpg",
+        "img/foto4.jpg", "img/foto5.jpg", "img/foto6.jpg",
+        "img/foto7.jpg", "img/foto8.jpg", "img/foto9.jpg"
+    ];
+    let indice = 0;
+    const fotoEl = document.getElementById("foto");
+
+    function proximaFoto() {
+        fotoEl.style.opacity = 0;
+        setTimeout(() => {
+            indice = (indice + 1) % fotos.length;
+            fotoEl.src = fotos[indice];
+            fotoEl.style.opacity = 1;
+        }, 500);
+    }
+    setInterval(proximaFoto, 3000);
+
+    // Corações caindo
+    function criarCoracao() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        heart.style.fontSize = Math.random() * 10 + 15 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(criarCoracao, 300);
+
+    // Efeito de digitação automático
+    const mensagemTexto = "'Pai é aquele que protege com amor, ensina o caminho, compartilha histórias e aconselha com sabedoria'. Diversas famílias do Brasil e do mundo não têm uma figura paterna. Diversos amigos e conhecidos meus cresceram sem ter um pai com que contar. Diversas crianças cresceram sem saber o que é o amor paterno. Eu tive sorte, muita sorte. Eu cresci numa família incrível, com um pai incrível. Desde minha infância você sempre esteve aqui, cuidando de mim, me protegendo. Quando eu precisava, você estava lá para me apoiar, me aconselhar ou só me escutar. E depois de todos esses anos, você ainda está aqui para o que eu precisar. Todos dizem que têm o melhor pai do mundo, mas acho que no meu caso é verdade sim. As vezes eu tento imaginar como seria minha vida sem você e eu não vejo nada. Não existe vida sem você. Não existe eu sem você. Eu te amo muito, pai. Você não faz ideia do orgulho que eu tenho de você, de tudo o que você faz por mim e pela sua família. Feliz seu dia!";
+    const mensagemEl = document.getElementById("mensagem");
+    let i = 0;
+    function digitar() {
+        if (i < mensagemTexto.length) {
+            mensagemEl.innerHTML += mensagemTexto.charAt(i);
+            i++;
+            setTimeout(digitar, 50);
+        }
+    }
+    digitar(); // Começa a digitar imediatamente
+
+    // Música começa apenas no primeiro clique
+    const musica = document.getElementById("musica");
+    document.body.addEventListener("click", () => {
+        if (musica.paused) {
+            musica.play();
+        }
+    }, { once: true });
+</script>
+
+</body>
+</html>
